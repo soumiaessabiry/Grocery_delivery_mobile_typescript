@@ -6,7 +6,8 @@
   "scripts": {
     "watch": "tsc -w",
     "start1": "node ./dist/app.js",
-    "start":"nodemon ./dist/app.js"
+    "start": "nodemon ./dist/app.js",
+    "dev": "npm-run-all --parallel watch start"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,8 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "@types/http-errors": "^2.0.1",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2"
   }
 }
