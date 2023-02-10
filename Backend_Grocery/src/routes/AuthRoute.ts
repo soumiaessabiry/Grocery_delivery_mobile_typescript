@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { Login } from "../controllers/UserController";
+import { Register } from "../controllers/UserController";
+import { registerValidationData } from "../validation/authValidation/registerValidation";
 const router = Router();
 
-router.get("/Login",Login);
+router.post("/Register",registerValidationData,Register);
 
 
 
