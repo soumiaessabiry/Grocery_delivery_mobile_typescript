@@ -10,6 +10,5 @@ exports.registerSchema = {
         username: joi_1.default.string().required().min(4).max(15),
         email: joi_1.default.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
         password: joi_1.default.string().required().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
-        confirmpassword: joi_1.default.ref('password'),
     })
 };
