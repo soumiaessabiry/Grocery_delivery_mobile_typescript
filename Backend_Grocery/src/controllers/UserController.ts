@@ -1,7 +1,10 @@
+import { SECRET } from './../Config/db';
 import { RequestHandler } from 'express';
 import creatHttperror from 'http-errors';
 import UserModel from '../Model/UserModel';
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken"
+import ls from "ts-localstorage"
 export const Register:RequestHandler=async (req,res,next)=>{
     const {username,email,password}:DataRegister=req.body;
     try {
@@ -18,11 +21,15 @@ export const Register:RequestHandler=async (req,res,next)=>{
 export const Login:RequestHandler=async(req,res,next)=>{
     const {email,password}=req.body;
     try {
+        
         const user=await UserModel.findOne({email});
         if(!user) return next(creatHttperror(404,"page note found"));
         const comparPassword=await bcryptjs.compare(password,user.password)
-        if(!comparPassword) return next(creatHttperror(401,"Password not Valide"))
-        res.json({MessageLogin:"Welcom user"})
+        if(!comparPassword) return next(creatHttperror(401,"Password not Valide"));
+        const token = jwt.sign({id:user._id},SECRET);
+        res.cookie("jwt",token)
+        res.json({token})
+
 
     } catch (error) {
         return next(creatHttperror(creatHttperror.InternalServerError))    

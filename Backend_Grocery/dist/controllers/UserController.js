@@ -13,9 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Login = exports.Register = void 0;
+const db_1 = require("./../Config/db");
 const http_errors_1 = __importDefault(require("http-errors"));
 const UserModel_1 = __importDefault(require("../Model/UserModel"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Register = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, email, password } = req.body;
     try {
@@ -41,7 +43,9 @@ const Login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
         const comparPassword = yield bcryptjs_1.default.compare(password, user.password);
         if (!comparPassword)
             return next((0, http_errors_1.default)(401, "Password not Valide"));
-        res.json({ MessageLogin: "Welcom user" });
+        const token = jsonwebtoken_1.default.sign({ id: user._id }, db_1.SECRET);
+        res.cookie("jwt", token);
+        res.json({ token });
     }
     catch (error) {
         return next((0, http_errors_1.default)(http_errors_1.default.InternalServerError));
