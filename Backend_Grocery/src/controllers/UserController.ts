@@ -26,14 +26,17 @@ export const Login:RequestHandler=async(req,res,next)=>{
         if(!user) return next(creatHttperror(404,"page note found"));
         const comparPassword=await bcryptjs.compare(password,user.password)
         if(!comparPassword) return next(creatHttperror(401,"Password not Valide"));
-        const token = jwt.sign({id:user._id},SECRET);
-        res.cookie("jwt",token)
+        const token = jwt.sign({userId:user._id},SECRET);
+        res.cookie("token",token)
         res.json({token})
 
 
     } catch (error) {
         return next(creatHttperror(creatHttperror.InternalServerError))    
     }
+}
+export const Test:RequestHandler=(req,res,next)=>{
+    res.json({ message: "hello souma" });
 }
 
 

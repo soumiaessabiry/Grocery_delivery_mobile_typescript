@@ -4,11 +4,18 @@ import AuthRoute from "./routes/AuthRoute"
 import mongoose from "mongoose";
 import {URL_DB}  from "./Config/db";
 import { errorHandler } from './middleware/errorHandler';
+import passport from 'passport';
+import kPassport from "./middleware/passport"
+import cookieParser from "cookie-parser"
 require('dotenv').config();
+
 const app=express();
 const PORT=process.env.PORT;
 
 app.use(express.json())
+app.use(cookieParser())
+app.use(passport.initialize())
+kPassport(passport)
 app.use("/Auth",AuthRoute);
 app.use("*",()=>{
     throw creatHttperror(404,"page not found")

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Login = exports.Register = void 0;
+exports.Test = exports.Login = exports.Register = void 0;
 const db_1 = require("./../Config/db");
 const http_errors_1 = __importDefault(require("http-errors"));
 const UserModel_1 = __importDefault(require("../Model/UserModel"));
@@ -43,8 +43,8 @@ const Login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
         const comparPassword = yield bcryptjs_1.default.compare(password, user.password);
         if (!comparPassword)
             return next((0, http_errors_1.default)(401, "Password not Valide"));
-        const token = jsonwebtoken_1.default.sign({ id: user._id }, db_1.SECRET);
-        res.cookie("jwt", token);
+        const token = jsonwebtoken_1.default.sign({ userId: user._id }, db_1.SECRET);
+        res.cookie("token", token);
         res.json({ token });
     }
     catch (error) {
@@ -52,3 +52,7 @@ const Login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.Login = Login;
+const Test = (req, res, next) => {
+    res.json({ message: "hello souma" });
+};
+exports.Test = Test;
